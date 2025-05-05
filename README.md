@@ -1,5 +1,3 @@
-Thought for a second
-
 
 ```markdown
 # Patient Data Management App
@@ -90,15 +88,7 @@ Integrated with the [Stisla Admin Dashboard template](https://getstisla.com/) fo
 
   * `patient_list.html` dynamically renders patients, includes search, pagination, and “Add Patient (Admin)” button.
 
----
 
-## 📝 Notes
-
-* Code follows Django best practices (app structure, `app_name.urls`, template inheritance).
-* UI is mobile-friendly and cleanly integrated with Stisla’s components.
-* Bonus features: animated search bar, zebra-striped tables, and styled pagination.
-
----
 
 ```
 ```
