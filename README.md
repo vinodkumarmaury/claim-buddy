@@ -9,29 +9,7 @@ Integrated with the [Stisla Admin Dashboard template](https://getstisla.com/) fo
 
 ---
 
-## 🏠 Project Structure
 
-```
-
-patient\_management/
-├── manage.py
-├── requirements.txt
-├── patients/
-│   ├── migrations/
-│   ├── templates/patients/
-│   │   └── patient\_list.html
-│   ├── models.py
-│   ├── views.py
-│   ├── urls.py
-│   └── admin.py
-└── patient\_management/
-├── settings.py
-├── urls.py
-└── wsgi.py
-static/
-└── stisla/        ← Stisla CSS/JS assets
-
-````
 
 ---
 
