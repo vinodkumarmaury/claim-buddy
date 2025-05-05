@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Patient List</title>
+    <link rel="stylesheet" href="{% static 'stisla/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'stisla/css/components.css' %}" />
+    <style>
+      body {
+        background-color: #f1f5f9;
+      }
+
+      .section-header h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2f3e46;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header h4 {
+        color: #1d3557;
+        font-size: 1.3rem;
+        font-weight: 500;
+      }
+
+      .excel-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .excel-table th,
+      .excel-table td {
+        border: 1px solid #d1d5db;
+        padding: 10px 14px;
+        text-align: left;
+      }
+
+      .excel-table th {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 600;
+      }
+
+      .excel-table tr:nth-child(even) td {
+        background-color: #f0f9ff;
+      }
+
+      .excel-table tr:hover td {
+        background-color: #e0f2fe;
+      }
+
+      /* Remove the default list bullets and reset padding/margins */
+.pagination, 
+.pagination ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure each page-item sits inline and is spaced out */
+.pagination .page-item {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+/* Style the links */
+.pagination .page-link {
+  display: block;
+  padding: 6px 12px;
+  color: #3b82f6;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Hover / focus */
+.pagination .page-link:hover,
+.pagination .page-link:focus {
+  background-color: #e0f2fe;
+  color: #1e3a8a;
+}
+
+/* Active page */
+.pagination .page-item.active .page-link {
+  background-color: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+}
+
+/* Disabled state */
+.pagination .page-item.disabled .page-link {
+  color: #a1a1aa;
+  background: #f9f9f9;
+  border-color: #ddd;
+  pointer-events: none;
+}
+
+
+      .search-bar {
+        max-width: 500px;
+        margin: 30px auto;
+      }
+      
+      .search-container {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.3s ease-in-out;
+      }
+      
+      .search-container:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      }
+      
+      .search-icon {
+        padding: 0 15px;
+        color: #3b82f6;
+        font-size: 1.2rem;
+        animation: pulse 2s infinite;
+      }
+      
+      .search-input {
+        flex: 1;
+        padding: 12px 16px;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        transition: background 0.3s;
+      }
+      
+      .search-input:focus {
+        background-color: #eef6ff;
+      }
+      
+      .search-button {
+        background: linear-gradient(to right, #3b82f6, #6366f1);
+        border: none;
+        color: white;
+        padding: 12px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+      
+      .search-button:hover {
+        background: linear-gradient(to right, #2563eb, #4f46e5);
+        transform: scale(1.05);
+      }
+      
+      /* Optional pulse animation for icon */
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+          opacity: 0.9;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="main-wrapper">
+        <div class="main-content">
+          <section class="section">
+            <div
+              class="section-header d-flex justify-content-between align-items-center"
+            >
+              <h1>Patient List</h1>
+              <a
+                href="/admin/patients/patient/add/"
+                class="btn btn-primary btn-lg"
+                >➕ Add Patient (Admin)</a
+              >
+            </div>
+
+            <div class="search-bar">
+              <form method="get" action="">
+                <div class="search-container">
+                  <span class="search-icon">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  <input
+                    type="text"
+                    name="q"
+                    placeholder="Search patients by name..."
+                    value="{{ request.GET.q }}"
+                    class="search-input"
+                    aria-label="Search patients"
+                  />
+                  <button type="submit" class="search-button">Search</button>
+                </div>
+              </form>
+            </div>
+            
+
+
+            <div class="section-body">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Patients</h4>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table excel-table">
+                      <thead>
+                        <tr>
+                          <th>Full Name</th>
+                          <th>Age</th>
+                          <th>Gender</th>
+                          <th>Insurance Provider</th>
+                          <th>Policy Number</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                          <td>{{ patient.full_name }}</td>
+                          <td>{{ patient.age }}</td>
+                          <td>{{ patient.get_gender_display }}</td>
+                          <td>{{ patient.insurance_provider }}</td>
+                          <td>{{ patient.policy_number }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                          <td colspan="5">No patients found.</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% if patients.has_other_pages %}
+            <div class="pagination-wrapper text-center my-4">
+              <ul class="pagination">
+                {% if patients.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page=1">« First</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ patients.previous_page_number }}">‹ Prev</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled"><span class="page-link">« First</span></li>
+                  <li class="page-item disabled"><span class="page-link">‹ Prev</span></li>
+                {% endif %}
+            
+                <li class="page-item active">
+                  <span class="page-link">Page {{ patients.number }} of {{ patients.paginator.num_pages }}</span>
+                </li>
+            
+                {% if patients.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ patients.next_page_number }}">Next ›</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ patients.paginator.num_pages }}">Last »</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled"><span class="page-link">Next ›</span></li>
+                  <li class="page-item disabled"><span class="page-link">Last »</span></li>
+                {% endif %}
+              </ul>
+            </div>
+            {% endif %}
+            
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'stisla/js/scripts.js' %}"></script>
+    <script src="{% static 'stisla/js/custom.js' %}"></script>
+  </body>
+</html>
